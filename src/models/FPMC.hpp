@@ -28,14 +28,15 @@ public:
     void copyBestModel();
     void loadBestModel();
 
+    /* variables */
     int K;
-
     double *v_ui;
     double *v_iu;
     double *v_il;
     double *v_li;
     double *b_i;
 
+    /* hyper-parameters */
     double lambda;
     double biasReg;
 }; 

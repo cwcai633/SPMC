@@ -31,7 +31,6 @@ public:
     double* b_i;
     double* r_u;
     double* r_i;
-     
     
     /* hyper-parameters */
     double lambda;

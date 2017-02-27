@@ -28,16 +28,13 @@ public:
     
     /* variables */
     int K;
-    //double a;
-    //double* b_u = new double[nUsers];
     double* b_i;
     double* r_u;
     double* r_i;
-    int group_size;
-    double rho;
-     
     
     /* hyper-parameters */
     double lambda;
     double biasReg;
+    int group_size;
+    double rho;
 };

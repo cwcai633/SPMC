@@ -22,8 +22,8 @@ public:
     void copyBestModel();
     void loadBestModel();
 
+    /* variables */
     int K;
-
     double *gamma_u;
     double *gamma_i;
     double *theta_i;
@@ -31,6 +31,7 @@ public:
     double *psi_u;
     double *b_i;
 
+    /* hyper-parameters */
     double lambda;
     double biasReg;
 }; 
