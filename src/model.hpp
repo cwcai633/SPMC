@@ -27,16 +27,12 @@ public:
         nItems = corp->nItems;
         nVotes = corp->nVotes;
         trustMap = corp->trustMap;
-        nUsers_ = nUsers;
-        nItems_ = nItems;
-        //nItems_ = nItems/1000;
-        //nItems_ = nItems/200;
         
         // leave out `two' for each user
         test_per_user = new pair<int,long long> [nUsers];
         val_per_user  = new pair<int,long long> [nUsers];
         for (int u = 0; u < nUsers; u ++) {
-            test_per_user[u] = make_pair(-1, -1);  // -1 denotes empty
+            test_per_user[u] = make_pair(-1, -1);  // -1 means empty
             val_per_user[u]  = make_pair(-1, -1);
         }
 
@@ -46,11 +42,6 @@ public:
         pos_per_item = new map<int,long long>[nItems];
         pos_per_user_seq = new vector<pair<int, long long> >[nUsers];
 
-	//int a = 0;
-	//for (auto it = trustMap.begin(); it != trustMap.end(); it++) {
-	//	a += it->second.size();
-	//}
-	//cout << a << endl;
         for (int x = 0; x < nVotes; x ++) {
             vote* v = corp->V.at(x);
             int user = v->user;
@@ -60,50 +51,23 @@ public:
             pos_per_user[user][item] = voteTime;
             pos_per_item[item][user] = voteTime;
             pos_per_user_seq[user].push_back(make_pair(item, voteTime));
-
-            //if (test_per_user[user].first == -1) { // add to test set
-            //    test_per_user[user] = make_pair(item, voteTime);
-            //} else if (val_per_user[user].first == -1) { // add to validation set
-            //    val_per_user[user] = make_pair(item, voteTime);
-            //}
-            //else {// add to training set
-            //    pos_per_user[user][item] = voteTime;
-            //    pos_per_item[item][user] = voteTime;
-            //}
         }
-	//cout << pos_per_user[1561].size() << endl;
-
-	//for (int i = 0; i < nUsers; i++ ){
-	//	cout << pos_per_user_seq[i].size() << endl;
-	//}
 
         for (int u = 0; u < nUsers; ++u) {
             if (pos_per_user_seq[u].size() < 2) {
                 continue;
             }
-            //fprintf(stderr, "%d\n", u);
             sort(pos_per_user_seq[u].begin(), pos_per_user_seq[u].end(), comp);
-            //int vector_size = pos_per_user_seq[u].size();
-            //test_per_user[u] = pos_per_user_seq[u][vector_size-1];
-            //val_per_user[u] = pos_per_user_seq[u][vector_size-2];
             test_per_user[u] = pos_per_user_seq[u][0];
             val_per_user[u] = pos_per_user_seq[u][1];
             int test_item = test_per_user[u].first;
             int val_item = val_per_user[u].first;
-            //pos_per_user_seq[u].pop_back();
-            //pos_per_user_seq[u].pop_back();
             pos_per_user_seq[u].erase(pos_per_user_seq[u].begin(), pos_per_user_seq[u].begin() + 2);
             pos_per_user[u].erase(test_item);
             pos_per_user[u].erase(val_item);
             pos_per_item[test_item].erase(u);
-            //fprintf(stderr, "%d\n", val_item);
             pos_per_item[val_item].erase(u);
-            //fprintf(stderr, "%d\n", u);
         } 
-        //for (int i = 0; i < nUsers; ++i) {
-        //    cout << pos_per_user_seq[i].size() << ":" << pos_per_user[i].size() << endl;
-        //}
-	//cout << pos_per_user[1561].size() << endl;
 
         // sanity check
         for (int u = 0; u < nUsers; u ++) {
@@ -131,15 +95,12 @@ public:
 
     /* Model parameters */
     int NW; // Total number of parameters
-    //double* W; // Contiguous version of all parameters
     double* bestW;
 
     /* Corpus related */
     corpus* corp; // dangerous
     int nUsers; // Number of users
     int nItems; // Number of items
-    int nUsers_; // Number of users
-    int nItems_; // Number of items
     int nVotes; // Number of ratings
 
     map<int,long long>* pos_per_user;

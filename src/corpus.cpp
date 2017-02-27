@@ -6,8 +6,6 @@ void corpus::loadData(const char* voteFile, const char* trustFile, int userMin, 
 	nUsers = 0;
 	nVotes = 0;
 
-	//imFeatureDim = 4096;
-
 	/// Note that order matters here
 	loadVotes(voteFile, userMin, itemMin);
 	loadTrusts(trustFile);
@@ -91,7 +89,6 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin)
 		exit(1);
 	}
 
-        //cout << uCounts["1.741300000000000000e+04"] << endl;
 	nRead = 0;
 	while (getline(in2, line)) {
 		stringstream ss(line);
@@ -103,9 +100,7 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin)
 			fflush(stderr);
 		}
 
-		//if (uCounts[uName] < userMin or bCounts[bName] < itemMin or uCounts[uName] < 4) {
 		if (uCounts[uName] < userMin or bCounts[bName] < itemMin) {
-                        //cout << uName << endl;
 			continue;
 		}
 

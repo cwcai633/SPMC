@@ -1,14 +1,12 @@
 #include "model.hpp"
 
 void model::AUC(double* AUC_val, double* AUC_test, double* std, bool is_val) {
-    //int nUsers_ = nUsers;
-    //int nItems_ = nItems/1000;
-    double *AUC_u_val = new double[nUsers_]; 
-    double *AUC_u_test = new double[nUsers_];
+    double *AUC_u_val = new double[nUsers]; 
+    double *AUC_u_test = new double[nUsers];
     *AUC_val = 0;
     *AUC_test = 0;
     *std = 0;
-    for (int u = 0; u < nUsers_; ++u) {
+    for (int u = 0; u < nUsers; ++u) {
         int val_item = val_per_user[u].first; 
         int test_item = test_per_user[u].first; 
         int last_item_val = pos_per_user_seq[u][0].first;
@@ -21,10 +19,6 @@ void model::AUC(double* AUC_val, double* AUC_test, double* std, bool is_val) {
         map<int, int> friend_items_test;
         for (int i = 0; i < (int) user_friends.size(); ++i) {
             int user_friend = user_friends[i];
-            //if (val_per_user[user_friend].second < user_time_val) {
-            //    friend_items_val[user_friend] = val_per_user[user_friend].first;
-            //    continue;
-            //}
             long long friend_time = -1;
             int friend_item = -1;
             int j = (int) pos_per_user_seq[user_friend].size() - 1;
@@ -64,21 +58,15 @@ void model::AUC(double* AUC_val, double* AUC_test, double* std, bool is_val) {
         int behind_val = 0;
         int behind_test = 0;
         int count = 0;
-        //vector<int> item_to_select;
-        //for (int i = 0; i < nItems; ++i) {
-        //    item_to_select.push_back(i);
-        //}
         set<int> item_selected;
         int num_iter = min(5000, nItems);
 
         for (int it = 0; it < num_iter; ++it) {
-        //for (int it = 0; it < nItems_ ; ++it) {
             int i; 
             do {
                 i = rand() % nItems;
             } while (item_selected.find(i) != item_selected.end());
             item_selected.insert(i);
-            //item_to_select.erase(item_to_select.begin() + i);
             bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
             if (viewed_by_user) continue;
             double pred_score_val = prediction(u, i, last_item_val, friend_items_val);
@@ -96,25 +84,25 @@ void model::AUC(double* AUC_val, double* AUC_test, double* std, bool is_val) {
         AUC_u_val[u] = (1.0 * behind_val / count);
         AUC_u_test[u] = (1.0 * behind_test / count);
     }
-    for (int u = 0; u < nUsers_; ++u) {
+    for (int u = 0; u < nUsers; ++u) {
         *AUC_val += AUC_u_val[u];
     }
-    *AUC_val /= nUsers_;
-    for (int u = 0; u < nUsers_; ++u) {
+    *AUC_val /= nUsers;
+    for (int u = 0; u < nUsers; ++u) {
         *AUC_test += AUC_u_test[u];
     }
-    *AUC_test /= nUsers_;
+    *AUC_test /= nUsers;
     double var = 0;
     if (is_val) {
-        for (int u = 0; u < nUsers_; ++u) {
+        for (int u = 0; u < nUsers; ++u) {
             var += square(AUC_u_val[u] - *AUC_val);
         }
     } else {
-        for (int u = 0; u < nUsers_; ++u) {
+        for (int u = 0; u < nUsers; ++u) {
             var += square(AUC_u_test[u] - *AUC_test);
         }
     }
-    *std = sqrt(var/nUsers_);
+    *std = sqrt(var/nUsers);
     delete[] AUC_u_val;
     delete[] AUC_u_test;
 }
@@ -174,18 +162,11 @@ void model::loadModel(const char* path) {
     in.close();
 }
 
-//void model::loadBestModel() {
-//
-//}
-
 void model::coldStart(int interval, const char* path) {
     int uCountMax = INT_MIN;
     int uCountMin = INT_MAX;
-    //cout << pos_per_user[50].size() << endl;
     for (int u = 0; u < nUsers; ++u) {
-        //int item = test_per_user[u].first;
         int uCount = pos_per_user[u].size(); 
-	//cout << uCount << endl;
         if (uCount > uCountMax) {
             uCountMax = uCount;
         }
@@ -196,9 +177,6 @@ void model::coldStart(int interval, const char* path) {
     }
     
     int binNum = (uCountMax - uCountMin) / interval + 1;
-    // first = sum of AUC in the bin, second = number of users
-    //double *binAUC = new double [binNum];
-    //int *binAUCCount = new int [binNum];
     pair<double, int> *binAUC = new pair<double, int> [binNum];
     map<int, double> AUC;
 
@@ -238,7 +216,6 @@ void model::coldStart(int interval, const char* path) {
         set<int> item_selected;
         int num_iter = min(5000, nItems);
         for (int it = 0; it < num_iter; ++it) {
-        //for (int it = 0; it < nItems_; ++it) {
             int i; 
             do {
                 i = rand() % nItems;
@@ -257,12 +234,8 @@ void model::coldStart(int interval, const char* path) {
     }
     
     for (int u = 0; u < nUsers; ++u) {
-        //int item = test_per_user[u].first;
         int uCount = pos_per_user[u].size(); 
         int bin = (uCount - uCountMin) / interval;
-        //if (bin == 0) {
-        //    fprintf(stderr, "%f\n", prediction(u, test_per_user[u].first, val_per_user[u].first));
-        //}
         binAUC[bin].first += AUC[u];
         binAUC[bin].second += 1;
     } 
