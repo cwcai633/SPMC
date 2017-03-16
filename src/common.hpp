@@ -32,59 +32,51 @@ double normal_frand(double mu, double sigma);
 /// Data associated with a rating
 typedef struct vote
 {
-	int user; // ID of the user
-	int item; // ID of the item
-	long long voteTime; // Unix time of the rating
+    int user; // ID of the user
+    int item; // ID of the item
+    long long voteTime; // Unix time of the rating
 } vote;
 
-inline double inner(double* x, double* y, int K)
-{
-	double res = 0;
-	for (int k = 0; k < K; k ++) {
-		res += x[k]*y[k];
-	}
-	return res;
+inline double inner(double* x, double* y, int K) {
+    double res = 0;
+    for (int k = 0; k < K; k ++) {
+        res += x[k] * y[k];
+    }
+    return res;
 }
 
-inline double square(double x)
-{
-	return x*x;
+inline double square(double x) {
+    return x * x;
 }
 
-inline double dsquare(double x)
-{
-	return 2*x;
+inline double dsquare(double x) {
+    return 2 * x;
 }
 
-inline double sigmoid(double x)
-{
-	return 1.0 / (1.0 + exp(-x));
+inline double sigmoid(double x) {
+    return 1.0 / (1.0 + exp(-x));
 }
 
-inline double clock_(void)
-{
-	timeval tim;
-	gettimeofday(&tim, NULL);
-	return tim.tv_sec + (tim.tv_usec / 1000000.0);
+inline double clock_(void) {
+    timeval tim;
+    gettimeofday(&tim, NULL);
+    return tim.tv_sec + (tim.tv_usec / 1000000.0);
 }
 
-static inline string &ltrim(string &s)
-{
-	s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
-	return s;
+static inline string &ltrim(string &s) {
+    s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
+    return s;
 }
 
 // trim from end
-static inline string &rtrim(string &s)
-{
-	s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
-	return s;
+static inline string &rtrim(string &s) {
+    s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
+    return s;
 }
 
 // trim from both ends
-static inline string &trim(string &s)
-{
-	return ltrim(rtrim(s));
+static inline string &trim(string &s) {
+    return ltrim(rtrim(s));
 }
 
 double inline frand()

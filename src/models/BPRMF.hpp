@@ -2,8 +2,7 @@
 
 #include "model.hpp"
 
-class BPRMF : public model
-{
+class BPRMF : public model {
 public:
     BPRMF(corpus* corp, int K, double lambda, double biasReg) : model(corp)
     , K(K)

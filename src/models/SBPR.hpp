@@ -2,8 +2,7 @@
 
 #include "model.hpp"
 
-class SBPR : public model
-{
+class SBPR : public model {
 public:
     SBPR(corpus* corp, int K, double lambda, double biasReg) : model(corp)
     , K(K)
