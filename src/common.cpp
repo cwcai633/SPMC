@@ -1,4 +1,4 @@
-include "common.hpp"
+#include "common.hpp"
 
 /// Safely open a file
 FILE* fopen_(const char* p, const char* m) {

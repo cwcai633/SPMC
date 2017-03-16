@@ -24,9 +24,9 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin) {
 
     string uName; // User name
     string bName; // Item name
-        float category; 
-        float rating;
-        float helpfulness;
+    float category; 
+    float rating;
+    float helpfulness;
     float voteTime; // Time rating was entered
     map<pair<int, int>, long long> voteMap;
 
