@@ -25,7 +25,7 @@ public:
     map<string, int> bCounts;
 
     void loadData(const char* voteFile, const char* trustFile, int userMin, int itemMin);
-        void loadTrusts(const char* trustFile);
+    void loadTrusts(const char* trustFile);
     void cleanUp();
 
 private:

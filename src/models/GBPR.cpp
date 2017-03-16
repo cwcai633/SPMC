@@ -39,7 +39,6 @@ void GBPR::cleanUp() {
 
 double GBPR::prediction(int user, int item, int last_item, map<int, int> friend_items) {
     double res = b_i[item];
-    //double res = 0;
     for (int k = 0; k < K; ++k) {
         res += R_U(user, k) * R_I(item, k);
     }

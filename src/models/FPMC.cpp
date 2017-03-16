@@ -134,7 +134,6 @@ void FPMC::oneiteration(double learn_rate) {
         do {
              j = rand() % nItems;
         } while (j == i);
-        //} while (pos_per_user[u].find(j) != pos_per_user[u].end());
         updateFactors(u, i, j, l, learn_rate);
     }
     delete [] user_time_matrix;
