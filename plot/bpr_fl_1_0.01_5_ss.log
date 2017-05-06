@@ -1,0 +1,190 @@
+{
+  "corpus": "../data/flixster/flixster_timestamp_timestamp_5.txt",
+  "trusts": "../data/flixster/flixster_trust_trust_5.txt",
+  Loading votes from ../data/flixster/flixster_timestamp_timestamp_5.txt, userMin = 4, itemMin = 0  .....
+  "nUsers": 114296
+.....
+
+  Generating votes data 
+  Loading trusts from ../data/flixster/flixster_trust_trust_5.txt  ........................ 
+  "nTrusts": 258850
+
+  "nUsers": 32444, "nItems": 9098, "nVotes": 160059
+
+<<< BPR-MF__K_20_lambda_0.0100_biasReg_1.0000 >>>
+
+Iter: 1, took 0.088157
+Iter: 2, took 0.091891
+Iter: 3, took 0.092663
+Iter: 4, took 0.091330
+Iter: 5, took 0.091087
+[Valid AUC = 0.875376], Test AUC = 0.870651, Test Std = 0.216739
+Iter: 6, took 0.083903
+Iter: 7, took 0.092025
+Iter: 8, took 0.090983
+Iter: 9, took 0.092227
+Iter: 10, took 0.091956
+[Valid AUC = 0.892164], Test AUC = 0.886590, Test Std = 0.199800
+Iter: 11, took 0.083108
+Iter: 12, took 0.091001
+Iter: 13, took 0.090876
+Iter: 14, took 0.091402
+Iter: 15, took 0.091581
+[Valid AUC = 0.897739], Test AUC = 0.892247, Test Std = 0.193278
+Iter: 16, took 0.082642
+Iter: 17, took 0.091615
+Iter: 18, took 0.090203
+Iter: 19, took 0.090451
+Iter: 20, took 0.091115
+[Valid AUC = 0.900474], Test AUC = 0.894726, Test Std = 0.189742
+Iter: 21, took 0.082738
+Iter: 22, took 0.091187
+Iter: 23, took 0.090484
+Iter: 24, took 0.091026
+Iter: 25, took 0.091401
+[Valid AUC = 0.901934], Test AUC = 0.896065, Test Std = 0.187967
+Iter: 26, took 0.083159
+Iter: 27, took 0.091913
+Iter: 28, took 0.091243
+Iter: 29, took 0.091497
+Iter: 30, took 0.091178
+[Valid AUC = 0.902731], Test AUC = 0.896772, Test Std = 0.187071
+Iter: 31, took 0.082856
+Iter: 32, took 0.090710
+Iter: 33, took 0.091996
+Iter: 34, took 0.090837
+Iter: 35, took 0.091003
+[Valid AUC = 0.903205], Test AUC = 0.897270, Test Std = 0.186481
+Iter: 36, took 0.083064
+Iter: 37, took 0.091911
+Iter: 38, took 0.091940
+Iter: 39, took 0.091617
+Iter: 40, took 0.091533
+[Valid AUC = 0.903647], Test AUC = 0.897615, Test Std = 0.186193
+Iter: 41, took 0.083082
+Iter: 42, took 0.092500
+Iter: 43, took 0.092272
+Iter: 44, took 0.092180
+Iter: 45, took 0.092028
+[Valid AUC = 0.903888], Test AUC = 0.897839, Test Std = 0.186190
+Iter: 46, took 0.083281
+Iter: 47, took 0.091495
+Iter: 48, took 0.091243
+Iter: 49, took 0.091532
+Iter: 50, took 0.091517
+[Valid AUC = 0.904077], Test AUC = 0.897845, Test Std = 0.186134
+Iter: 51, took 0.083540
+Iter: 52, took 0.091042
+Iter: 53, took 0.091556
+Iter: 54, took 0.091714
+Iter: 55, took 0.091128
+[Valid AUC = 0.904211], Test AUC = 0.898085, Test Std = 0.186164
+Iter: 56, took 0.083503
+Iter: 57, took 0.091592
+Iter: 58, took 0.090449
+Iter: 59, took 0.091677
+Iter: 60, took 0.091209
+[Valid AUC = 0.904262], Test AUC = 0.898240, Test Std = 0.186340
+Iter: 61, took 0.083987
+Iter: 62, took 0.092760
+Iter: 63, took 0.091783
+Iter: 64, took 0.091847
+Iter: 65, took 0.091425
+[Valid AUC = 0.904292], Test AUC = 0.898197, Test Std = 0.186504
+Iter: 66, took 0.080859
+Iter: 67, took 0.088657
+Iter: 68, took 0.088807
+Iter: 69, took 0.088618
+Iter: 70, took 0.089486
+[Valid AUC = 0.904241], Test AUC = 0.898074, Test Std = 0.186776
+Iter: 71, took 0.080147
+Iter: 72, took 0.089040
+Iter: 73, took 0.089582
+Iter: 74, took 0.089055
+Iter: 75, took 0.089661
+[Valid AUC = 0.904293], Test AUC = 0.898141, Test Std = 0.186974
+Iter: 76, took 0.081437
+Iter: 77, took 0.089404
+Iter: 78, took 0.090207
+Iter: 79, took 0.089987
+Iter: 80, took 0.089567
+[Valid AUC = 0.904351], Test AUC = 0.898235, Test Std = 0.187002
+Iter: 81, took 0.081462
+Iter: 82, took 0.089858
+Iter: 83, took 0.089839
+Iter: 84, took 0.089795
+Iter: 85, took 0.089902
+[Valid AUC = 0.904354], Test AUC = 0.898377, Test Std = 0.187113
+Iter: 86, took 0.075581
+Iter: 87, took 0.083542
+Iter: 88, took 0.083521
+Iter: 89, took 0.083677
+Iter: 90, took 0.083768
+[Valid AUC = 0.904311], Test AUC = 0.898344, Test Std = 0.187341
+Iter: 91, took 0.075015
+Iter: 92, took 0.083409
+Iter: 93, took 0.083748
+Iter: 94, took 0.083871
+Iter: 95, took 0.084146
+[Valid AUC = 0.904263], Test AUC = 0.898404, Test Std = 0.187406
+Iter: 96, took 0.074609
+Iter: 97, took 0.083295
+Iter: 98, took 0.083520
+Iter: 99, took 0.083547
+Iter: 100, took 0.083501
+[Valid AUC = 0.904268], Test AUC = 0.898357, Test Std = 0.187602
+Iter: 101, took 0.075739
+Iter: 102, took 0.084321
+Iter: 103, took 0.084736
+Iter: 104, took 0.084524
+Iter: 105, took 0.084250
+[Valid AUC = 0.904262], Test AUC = 0.898361, Test Std = 0.187647
+Iter: 106, took 0.075806
+Iter: 107, took 0.084004
+Iter: 108, took 0.083726
+Iter: 109, took 0.083903
+Iter: 110, took 0.084165
+[Valid AUC = 0.904292], Test AUC = 0.898390, Test Std = 0.187677
+Iter: 111, took 0.079457
+Iter: 112, took 0.087066
+Iter: 113, took 0.087174
+Iter: 114, took 0.087112
+Iter: 115, took 0.086946
+[Valid AUC = 0.904196], Test AUC = 0.898342, Test Std = 0.187765
+Iter: 116, took 0.081286
+Iter: 117, took 0.090351
+Iter: 118, took 0.090164
+Iter: 119, took 0.090098
+Iter: 120, took 0.090406
+[Valid AUC = 0.904141], Test AUC = 0.898343, Test Std = 0.187902
+Iter: 121, took 0.079564
+Iter: 122, took 0.088243
+Iter: 123, took 0.087959
+Iter: 124, took 0.087499
+Iter: 125, took 0.088257
+[Valid AUC = 0.904165], Test AUC = 0.898392, Test Std = 0.187954
+Iter: 126, took 0.080216
+Iter: 127, took 0.088674
+Iter: 128, took 0.088360
+Iter: 129, took 0.088846
+Iter: 130, took 0.088622
+[Valid AUC = 0.904136], Test AUC = 0.898436, Test Std = 0.188018
+Iter: 131, took 0.078902
+Iter: 132, took 0.086974
+Iter: 133, took 0.088472
+Iter: 134, took 0.088347
+Iter: 135, took 0.087617
+[Valid AUC = 0.904103], Test AUC = 0.898284, Test Std = 0.188110
+Iter: 136, took 0.077790
+Iter: 137, took 0.086592
+Iter: 138, took 0.086097
+Iter: 139, took 0.086671
+Iter: 140, took 0.086613
+[Valid AUC = 0.904049], Test AUC = 0.898203, Test Std = 0.188190
+Overfitted. Exiting... 
+
+
+ <<< BPR-MF >>> Test AUC = 0.898370, Test Std = 0.196332
+Best Iteration = 85, Val AUC = 0.904361
+
+}

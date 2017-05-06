@@ -1,0 +1,94 @@
+{
+  "corpus": "../data/umn_foursquare_datasets/foursquare_timestamp_5.txt",
+  "trusts": "../data/umn_foursquare_datasets/foursquare_trust_5.txt",
+  Loading votes from ../data/umn_foursquare_datasets/foursquare_timestamp_5.txt, userMin = 4, itemMin = 0  .........
+  "nUsers": 485381
+.........
+
+  Generating votes data 
+  Loading trusts from ../data/umn_foursquare_datasets/foursquare_trust_5.txt  ........... 
+  "nTrusts": 65732
+
+  "nUsers": 43137, "nItems": 24825, "nVotes": 188270
+
+<<< BPR-MF__K_20_lambda_0.0100_biasReg_1.0000 >>>
+
+Iter: 1, took 0.174727
+Iter: 2, took 0.155842
+Iter: 3, took 0.153524
+Iter: 4, took 0.147641
+Iter: 5, took 0.133823
+[Valid AUC = 0.851829], Test AUC = 0.856082, Test Std = 0.258864
+Iter: 6, took 0.293577
+Iter: 7, took 0.162855
+Iter: 8, took 0.184233
+Iter: 9, took 0.132341
+Iter: 10, took 0.182995
+[Valid AUC = 0.846458], Test AUC = 0.848920, Test Std = 0.262609
+Iter: 11, took 0.142389
+Iter: 12, took 0.124558
+Iter: 13, took 0.123725
+Iter: 14, took 0.124859
+Iter: 15, took 0.117444
+[Valid AUC = 0.842635], Test AUC = 0.845036, Test Std = 0.265374
+Iter: 16, took 0.165320
+Iter: 17, took 0.154533
+Iter: 18, took 0.195653
+Iter: 19, took 0.171386
+Iter: 20, took 0.147822
+[Valid AUC = 0.839795], Test AUC = 0.841847, Test Std = 0.266842
+Iter: 21, took 0.260487
+Iter: 22, took 0.217336
+Iter: 23, took 0.215800
+Iter: 24, took 0.195388
+Iter: 25, took 0.199365
+[Valid AUC = 0.838745], Test AUC = 0.840948, Test Std = 0.267078
+Iter: 26, took 0.147790
+Iter: 27, took 0.137601
+Iter: 28, took 0.137473
+Iter: 29, took 0.136251
+Iter: 30, took 0.138780
+[Valid AUC = 0.837844], Test AUC = 0.840277, Test Std = 0.268176
+Iter: 31, took 0.165544
+Iter: 32, took 0.153265
+Iter: 33, took 0.149731
+Iter: 34, took 0.154367
+Iter: 35, took 0.148277
+[Valid AUC = 0.837132], Test AUC = 0.838831, Test Std = 0.268239
+Iter: 36, took 0.136208
+Iter: 37, took 0.127233
+Iter: 38, took 0.125261
+Iter: 39, took 0.129001
+Iter: 40, took 0.130423
+[Valid AUC = 0.835885], Test AUC = 0.837899, Test Std = 0.268956
+Iter: 41, took 0.140121
+Iter: 42, took 0.131286
+Iter: 43, took 0.129237
+Iter: 44, took 0.134492
+Iter: 45, took 0.133861
+[Valid AUC = 0.835429], Test AUC = 0.836702, Test Std = 0.269230
+Iter: 46, took 0.152262
+Iter: 47, took 0.170692
+Iter: 48, took 0.182497
+Iter: 49, took 0.184473
+Iter: 50, took 0.156782
+[Valid AUC = 0.833729], Test AUC = 0.834457, Test Std = 0.270606
+Iter: 51, took 0.306369
+Iter: 52, took 0.242157
+Iter: 53, took 0.188228
+Iter: 54, took 0.281181
+Iter: 55, took 0.300049
+[Valid AUC = 0.832734], Test AUC = 0.833591, Test Std = 0.271272
+Iter: 56, took 0.258486
+Iter: 57, took 0.308042
+Iter: 58, took 0.289142
+Iter: 59, took 0.267842
+Iter: 60, took 0.240834
+[Valid AUC = 0.831236], Test AUC = 0.831859, Test Std = 0.273001
+Overfitted. Exiting... 
+
+
+ <<< BPR-MF >>> Test AUC = 0.856052, Test Std = 0.256544
+Best Iteration = 5, Val AUC = 0.851818
+
+}
