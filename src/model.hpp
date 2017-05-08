@@ -112,10 +112,6 @@ public:
 
     int num_pos_events;
 
-    /* additional information for demo paper */
-    map<int, double> itemPrice;
-    map<int, string> itemBrand;
-
     map<int, vector<int> > trustMap;
     
     virtual void AUC(double* AUC_val, double* AUC_test, double* std, bool is_val);
