@@ -360,9 +360,8 @@ int main(int argc, char** argv) {
         int K  = atoi(argv[4]);
         double biasReg = atof(argv[5]);
         double lambda = atof(argv[6]);
-        int iter = atoi(argv[7]);
         char* corpName = argv[8];
-        analyze(&corp, K, lambda, biasReg, corpName);
+        analyze(&corp, K, lambda, biasReg, corpName, 10);
     }
 
     corp.cleanUp();

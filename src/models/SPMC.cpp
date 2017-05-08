@@ -8,6 +8,13 @@
 #define PSI_U(i, j)   (psi_u[(i) * K + j])
 #define ALPHA         1.0
 
+class CompScore {
+public:
+    bool operator() (pair<int, double> i, pair<int, double> j) {
+        return (i.second < j.second) || (i.second == j.second && i.first < j.first);
+    }
+};
+
 void SPMC::init() {
     gamma_u = new double[nUsers * K];
     gamma_i = new double[nItems * K];
@@ -313,13 +320,16 @@ string SPMC::toString() {
     return str;
 }
 
-string SPMC::analyze(int n, const char* path) {
+void SPMC::analyze(int n, const char* path) {
+    ofstream file;
+    file.open((string(path) + ".analyze").c_str());
+    if (!file.is_open()){
+        fprintf(stderr, "Error when create the analyze file");
+        exit(1);
+    }
     for (int iter = 0; iter < n; ++iter) {
         int u = rand() % nUsers;
-        int val_item = val_per_user[u].first; 
         int test_item = test_per_user[u].first; 
-        int last_item_val = pos_per_user_seq[u][0].first;
-        int last_item_test = val_item;
 
         long long user_time_val = val_per_user[u].second;
         long long user_time_test = test_per_user[u].second;
@@ -361,4 +371,43 @@ string SPMC::analyze(int n, const char* path) {
                 friend_items_test[user_friend] = friend_item; 
             }
         }
+
+        priority_queue<pair<int, double>, vector<pair<int, double> >, CompScore> user_scores;
+        set<int> item_selected;
+        int num_iter = min(5000, nItems);
+        for (int it = 0; it < num_iter; ++it) {
+            int i; 
+            do {
+                i = rand() % nItems;
+            } while (item_selected.find(i) != item_selected.end());
+            item_selected.insert(i);
+            bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
+            if (viewed_by_user) continue;
+            double score = 0;
+            double F = pow(friend_items_test.size(), ALPHA);
+
+            for (auto it = friend_items_test.begin(); it != friend_items_test.end(); ++it) {
+                int user_friend = it->first;
+                int friend_item = it->second;
+                double weight = 0.0;
+                for (int k = 0; k < K; ++k) {
+                    weight += PSI_U(u, k) * PSI_U(user_friend, k);
+                }
+                weight = sigmoid(weight);
+                for (int k = 0; k < K; ++k) {
+                    score += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
+                }
+            }
+            user_scores.push(make_pair(i, score));
+            if (user_scores.size() > 10) {
+                user_scores.pop();
+            }
+        }
+        for (int i = 0; i < (int)user_scores.size(); ++i) {
+            pair<int, double> user_score = user_scores.top();
+            user_scores.pop();
+            file << u << " " << user_score.first << " " << test_item << endl;
+        }
+    }
+    file.close();
 }
