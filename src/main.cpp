@@ -345,6 +345,17 @@ int main(int argc, char** argv) {
         go_GBPR(&corp, K, lambda, biasReg, iter, corpName);
     }
 
+    // Analyze the trained SPMC model
+    if ((strcmp(argv[1], "--analyze") == 0)) {
+        int K  = atoi(argv[4]);
+        double biasReg = atof(argv[5]);
+        double lambda = atof(argv[6]);
+        int iter = atoi(argv[7]);
+        char* corpName = argv[8];
+    }
+
+
+
     corp.cleanUp();
     fprintf(stderr, "}\n");
     return 0;
