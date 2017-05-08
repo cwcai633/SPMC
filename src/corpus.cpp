@@ -86,6 +86,10 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin) {
         exit(1);
     }
 
+    //ofstream userMap, itemMap;
+    //userMap.open("user_map.out");
+    //itemMap.open("item_map.out");
+
     nRead = 0;
     while (getline(in2, line)) {
         stringstream ss(line);
@@ -103,11 +107,13 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin) {
 
         // new item
         if (itemIds.find(bName) == itemIds.end()) {
+            //itemMap << bName << " " << nItems << endl;
             rItemIds[nItems] = bName;
             itemIds[bName] = nItems++;
         }
         // new user
         if (userIds.find(uName) == userIds.end()) {
+            //userMap << uName << " " << nUsers << endl;
             rUserIds[nUsers] = uName;
             userIds[uName] = nUsers++;
         }
@@ -119,6 +125,8 @@ void corpus::loadVotes(const char* voteFile, int userMin, int itemMin) {
         voteMap[make_pair(userIds[uName], itemIds[bName])] = voteTime;    
     }
     in2.close();
+    //userMap.close();
+    //itemMap.close();
 
     fprintf(stderr, "\n");
     generateVotes(voteMap);

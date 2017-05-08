@@ -31,7 +31,7 @@ public:
         // leave out `two' for each user
         test_per_user = new pair<int,long long> [nUsers];
         val_per_user  = new pair<int,long long> [nUsers];
-        for (int u = 0; u < nUsers; u ++) {
+        for (int u = 0; u < nUsers; ++u) {
             test_per_user[u] = make_pair(-1, -1);  // -1 means empty
             val_per_user[u]  = make_pair(-1, -1);
         }
@@ -42,7 +42,7 @@ public:
         pos_per_item = new map<int,long long>[nItems];
         pos_per_user_seq = new vector<pair<int, long long> >[nUsers];
 
-        for (int x = 0; x < nVotes; x ++) {
+        for (int x = 0; x < nVotes; ++x) {
             vote* v = corp->V.at(x);
             int user = v->user;
             int item = v->item;
@@ -70,7 +70,7 @@ public:
         } 
 
         // sanity check
-        for (int u = 0; u < nUsers; u ++) {
+        for (int u = 0; u < nUsers; ++u) {
             if (test_per_user[u].first == -1 || val_per_user[u].first == -1) {
                 fprintf(stderr, "\n\n Corpus split exception when spliting %d.\n", u);
                 exit(1);
@@ -79,7 +79,7 @@ public:
 
         // calculate num_pos_events
         num_pos_events = 0;
-        for (int u = 0; u < nUsers; u ++) {
+        for (int u = 0; u < nUsers; ++u) {
             num_pos_events += pos_per_user[u].size();
         }
     }
