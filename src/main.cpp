@@ -363,7 +363,7 @@ int main(int argc, char** argv) {
         double biasReg = atof(argv[5]);
         double lambda = atof(argv[6]);
         char* corpName = argv[8];
-        analyze(&corp, K, lambda, biasReg, corpName, 10);
+        analyze(&corp, K, lambda, biasReg, corpName, 50);
     }
 
     corp.cleanUp();
