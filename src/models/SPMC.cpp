@@ -322,7 +322,7 @@ string SPMC::toString() {
 
 void SPMC::analyze(int n, const char* path) {
     ofstream file;
-    file.open((string(path) + ".analyze").c_str());
+    file.open(path);
     if (!file.is_open()){
         fprintf(stderr, "Error when create the analyze file");
         exit(1);
@@ -331,27 +331,9 @@ void SPMC::analyze(int n, const char* path) {
         int u = rand() % nUsers;
         int test_item = test_per_user[u].first; 
 
-        long long user_time_val = val_per_user[u].second;
         long long user_time_test = test_per_user[u].second;
         vector<int> user_friends = trustMap[u];
-        map<int, int> friend_items_val;
         map<int, int> friend_items_test;
-        for (int i = 0; i < (int) user_friends.size(); ++i) {
-            int user_friend = user_friends[i];
-            long long friend_time = -1;
-            int friend_item = -1;
-            int j = (int) pos_per_user_seq[user_friend].size() - 1;
-            while (j >= 0 && pos_per_user_seq[user_friend][j].second < user_time_val) {
-                friend_time = pos_per_user_seq[user_friend][j].second;
-                friend_item = pos_per_user_seq[user_friend][j].first;
-                j--;
-            }
-
-            if (friend_time != -1 and friend_item != -1) {
-                friend_items_val[user_friend] = friend_item; 
-            }
-        }
-
         for (int i = 0; i < (int) user_friends.size(); ++i) {
             int user_friend = user_friends[i];
             if (val_per_user[user_friend].second < user_time_test) {
@@ -371,10 +353,16 @@ void SPMC::analyze(int n, const char* path) {
                 friend_items_test[user_friend] = friend_item; 
             }
         }
+        if (friend_items_test.size() == 0) {
+            --iter;
+            continue;
+        }
 
         priority_queue<pair<int, double>, vector<pair<int, double> >, CompScore> user_scores;
         set<int> item_selected;
         int num_iter = min(5000, nItems);
+        double score_max = numeric_limits<double>::min();
+        pair<int, int> best_friend_pair;
         for (int it = 0; it < num_iter; ++it) {
             int i; 
             do {
@@ -383,20 +371,26 @@ void SPMC::analyze(int n, const char* path) {
             item_selected.insert(i);
             bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
             if (viewed_by_user) continue;
-            double score = 0;
+            double score = 0.0;
             double F = pow(friend_items_test.size(), ALPHA);
 
             for (auto it = friend_items_test.begin(); it != friend_items_test.end(); ++it) {
                 int user_friend = it->first;
                 int friend_item = it->second;
                 double weight = 0.0;
+                double score_t = 0;
                 for (int k = 0; k < K; ++k) {
                     weight += PSI_U(u, k) * PSI_U(user_friend, k);
                 }
                 weight = sigmoid(weight);
                 for (int k = 0; k < K; ++k) {
-                    score += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
+                    score_t += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
                 }
+                if (score_t > score_max) {
+                    best_friend_pair = *it;
+                    score_max = score_t;
+                }
+                score += score_t;
             }
             user_scores.push(make_pair(i, score));
             if (user_scores.size() > 10) {
@@ -406,7 +400,7 @@ void SPMC::analyze(int n, const char* path) {
         for (int i = 0; i < (int)user_scores.size(); ++i) {
             pair<int, double> user_score = user_scores.top();
             user_scores.pop();
-            file << u << " " << user_score.first << " " << test_item << endl;
+            file << u << " " << user_score.first << " " << test_item << " " << best_friend_pair.first << " " << best_friend_pair.second << endl;
         }
     }
     file.close();

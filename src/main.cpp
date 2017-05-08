@@ -182,6 +182,7 @@ int main(int argc, char** argv) {
         printf(" --gbpr       GBPR\n");
         printf(" \nTo load a model, use --load at the end.\n");
         printf(" \nTo calculate coldstart, use --coldstart at the end.\n");
+        printf(" \nTo `visualize', use --analyze at the beginning.\n");
         exit(1);
     }
 
@@ -190,7 +191,8 @@ int main(int argc, char** argv) {
          strcmp(argv[1], "--spmc") != 0 &&
          strcmp(argv[1], "--sbpr") != 0 &&
          strcmp(argv[1], "--gbpr") != 0 &&
-         strcmp(argv[1], "--fpmc") != 0) {
+         strcmp(argv[1], "--fpmc") != 0 &&
+         strcmp(argv[1], "--analyze") != 0) {
         printf(" No such an algorithm. \n");
         printf(" Please enter the name of algorithm: \n");
         printf(" --pop        POP\n");
