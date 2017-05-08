@@ -160,6 +160,16 @@ void calculateColdStart(char* modelName, corpus* corp, int K, double lambda, dou
     }
 }
 
+void analyze(corpus* corp, int K, double lambda, double biasReg, const char* corp_name, int n) {
+    SPMC md(corp, K, lambda, biasReg);
+    md.init();
+    const char* dataPath = (string(corp_name) + "__" + md.toString()).c_str();
+    md.loadModel(dataPath);
+    md.loadBestModel();
+    md.analyze(n, (string(corp_name) + "__" + md.toString() + ".visual").c_str());
+    md.cleanUp();
+}
+
 int main(int argc, char** argv) {
     srand(0);
     if (argc <= 1) {
@@ -352,9 +362,8 @@ int main(int argc, char** argv) {
         double lambda = atof(argv[6]);
         int iter = atoi(argv[7]);
         char* corpName = argv[8];
+        analyze(&corp, K, lambda, biasReg, corpName);
     }
-
-
 
     corp.cleanUp();
     fprintf(stderr, "}\n");

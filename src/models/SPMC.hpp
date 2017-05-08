@@ -21,6 +21,7 @@ public:
     string toString();
     void copyBestModel();
     void loadBestModel();
+    void analyze(int n, const char* path);
 
     /* variables */
     int K;

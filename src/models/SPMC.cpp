@@ -312,3 +312,7 @@ string SPMC::toString() {
     sprintf(str, "SPMC__K_%d_lambda_%.4f_biasReg_%.4f", K, lambda, biasReg);
     return str;
 }
+
+string SPMC::analyze(int n, const char* path) {
+
+}
