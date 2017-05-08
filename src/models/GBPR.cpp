@@ -169,7 +169,7 @@ void GBPR::train(int iterations, double learn_rate) {
     int best_iter = 0;
 
     // SGD begins
-    for (int iter = 1; iter <= iterations; iter ++) {
+    for (int iter = 1; iter <= iterations; ++iter) {
         
         // perform one iter of SGD
         double l_dlStart = clock_();
