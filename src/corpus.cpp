@@ -175,7 +175,7 @@ void corpus::loadTrusts(const char* trustFile) {
 void corpus::generateVotes(map<pair<int, int>, long long>& voteMap) {
     fprintf(stderr, "\n  Generating votes data \n");
     
-    for(map<pair<int, int>, long long>::iterator it = voteMap.begin(); it != voteMap.end(); it ++) {
+    for(map<pair<int, int>, long long>::iterator it = voteMap.begin(); it != voteMap.end(); it++) {
         vote* v = new vote();
         v->user = it->first.first;
         v->item = it->first.second;

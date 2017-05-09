@@ -39,7 +39,7 @@ typedef struct vote
 
 inline double inner(double* x, double* y, int K) {
     double res = 0;
-    for (int k = 0; k < K; k ++) {
+    for (int k = 0; k < K; ++k) {
         res += x[k] * y[k];
     }
     return res;
