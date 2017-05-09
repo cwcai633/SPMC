@@ -327,9 +327,9 @@ void SPMC::analyze(int n, const char* path) {
         fprintf(stderr, "Error when create the analyze file");
         exit(1);
     }
-    for (int iter = 0; iter < n; ++iter) {
-        int u = rand() % nUsers;
+    for (int u = 0; u < nUsers; ++u) {
         int test_item = test_per_user[u].first; 
+        int last_item_test = val_per_user[u].first;
 
         long long user_time_test = test_per_user[u].second;
         vector<int> user_friends = trustMap[u];
@@ -346,7 +346,7 @@ void SPMC::analyze(int n, const char* path) {
             while (j >= 0 && pos_per_user_seq[user_friend][j].second < user_time_test) {
                 friend_time = pos_per_user_seq[user_friend][j].second;
                 friend_item = pos_per_user_seq[user_friend][j].first;
-                j--;
+                --j;
             }
 
             if (friend_time != -1 and friend_item != -1) {
@@ -361,9 +361,11 @@ void SPMC::analyze(int n, const char* path) {
         priority_queue<pair<int, double>, vector<pair<int, double> >, CompScore> user_scores;
         set<int> item_selected;
         int num_iter = min(5000, nItems);
-        double score_max = numeric_limits<double>::min();
+        double weight_max = numeric_limits<double>::min();
+        double weight_min = numeric_limits<double>::max();
         pair<int, int> best_friend_pair;
-        for (int it = 0; it < num_iter; ++it) {
+        pair<int, int> worst_friend_pair;
+        for (int num = 0; num < num_iter; ++num) {
             int i; 
             do {
                 i = rand() % nItems;
@@ -371,33 +373,45 @@ void SPMC::analyze(int n, const char* path) {
             item_selected.insert(i);
             bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
             if (viewed_by_user) continue;
-            double score = 0.0;
             double F = pow(friend_items_test.size(), ALPHA);
+            double res = 0.0;
 
             for (auto it = friend_items_test.begin(); it != friend_items_test.end(); ++it) {
                 int user_friend = it->first;
                 int friend_item = it->second;
                 double weight = 0.0;
-                double score_t = 0;
+                res = b_i[i];
+
+                for (int k = 0; k < K; ++k) {
+                    res += GAMMA_U(u, k) * GAMMA_I(i, k);
+                }
+
+                for (int k = 0; k < K; ++k) {
+                   res += THETA_I(i, k) * THETA_I(last_item_test, k);
+                }
                 for (int k = 0; k < K; ++k) {
                     weight += PSI_U(u, k) * PSI_U(user_friend, k);
                 }
                 weight = sigmoid(weight);
                 for (int k = 0; k < K; ++k) {
-                    score_t += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
+                    res += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
                 }
-                if (score_t > score_max) {
+                if (weight > weight_max) {
                     best_friend_pair = *it;
-                    score_max = score_t;
+                    weight_max = weight;
                 }
-                score += score_t;
+                if (weight < weight_min) {
+                    worst_friend_pair = *it;
+                    weight_min = weight;
+                }
             }
-            user_scores.push(make_pair(i, score));
-            if (user_scores.size() > 10) {
+            user_scores.push(make_pair(i, res));
+            if (user_scores.size() > 5) {
                 user_scores.pop();
             }
         }
-        for (int i = 0; i < (int)user_scores.size(); ++i) {
+        int size = (int)user_scores.size();
+        for (int i = 0; i < size; ++i) {
             pair<int, double> user_score = user_scores.top();
             user_scores.pop();
             file << u << " " << user_score.first << " " << test_item << " " << best_friend_pair.first << " " << best_friend_pair.second << endl;
