@@ -8,10 +8,19 @@
 #define PSI_U(i, j)   (psi_u[(i) * K + j])
 #define ALPHA         1.0
 
+struct FriendItems {
+    int user_id;
+    int friend_id;
+    int predicted_item;
+    int friend_item;
+    double affinity;
+    int test_item;
+};
+
 class CompScore {
 public:
-    bool operator() (pair<int, double> i, pair<int, double> j) {
-        return (i.second < j.second) || (i.second == j.second && i.first < j.first);
+    bool operator() (FriendItems i, FriendItems j) {
+        return i.affinity < j.affinity;
     }
 };
 
@@ -327,10 +336,11 @@ void SPMC::analyze(int n, const char* path) {
         fprintf(stderr, "Error when create the analyze file");
         exit(1);
     }
+    
+    priority_queue<FriendItems, vector<FriendItems>, CompScore> user_affinity;
     for (int u = 0; u < nUsers; ++u) {
         int test_item = test_per_user[u].first; 
         int last_item_test = val_per_user[u].first;
-
         long long user_time_test = test_per_user[u].second;
         vector<int> user_friends = trustMap[u];
         map<int, int> friend_items_test;
@@ -354,17 +364,32 @@ void SPMC::analyze(int n, const char* path) {
             }
         }
         if (friend_items_test.size() == 0) {
-            --iter;
             continue;
         }
 
-        priority_queue<pair<int, double>, vector<pair<int, double> >, CompScore> user_scores;
+        int best_friend = -1;
+        int predicted_item = -1;
+        int best_friend_item = -1;
         set<int> item_selected;
         int num_iter = min(5000, nItems);
         double weight_max = numeric_limits<double>::min();
-        double weight_min = numeric_limits<double>::max();
-        pair<int, int> best_friend_pair;
-        pair<int, int> worst_friend_pair;
+        //double weight_min = numeric_limits<double>::max();
+        double res_max = numeric_limits<double>::min();
+        for (auto it = friend_items_test.begin(); it != friend_items_test.end(); ++it) {
+            int user_friend = it->first;
+            int friend_item = it->second;
+            double weight = 0.0;
+            for (int k = 0; k < K; ++k) {
+                weight += PSI_U(u, k) * PSI_U(user_friend, k);
+            }
+            weight = sigmoid(weight);
+            if (weight > weight_max) {
+                weight_max = weight;
+                best_friend = user_friend;
+                best_friend_item = friend_item;
+            }
+        }
+
         for (int num = 0; num < num_iter; ++num) {
             int i; 
             do {
@@ -374,48 +399,33 @@ void SPMC::analyze(int n, const char* path) {
             bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
             if (viewed_by_user) continue;
             double F = pow(friend_items_test.size(), ALPHA);
-            double res = 0.0;
+            double res = b_i[i];
 
-            for (auto it = friend_items_test.begin(); it != friend_items_test.end(); ++it) {
-                int user_friend = it->first;
-                int friend_item = it->second;
-                double weight = 0.0;
-                res = b_i[i];
-
-                for (int k = 0; k < K; ++k) {
-                    res += GAMMA_U(u, k) * GAMMA_I(i, k);
-                }
-
-                for (int k = 0; k < K; ++k) {
-                   res += THETA_I(i, k) * THETA_I(last_item_test, k);
-                }
-                for (int k = 0; k < K; ++k) {
-                    weight += PSI_U(u, k) * PSI_U(user_friend, k);
-                }
-                weight = sigmoid(weight);
-                for (int k = 0; k < K; ++k) {
-                    res += 2 * weight * PHI_I(i, k) * PHI_I(friend_item, k) / F;
-                }
-                if (weight > weight_max) {
-                    best_friend_pair = *it;
-                    weight_max = weight;
-                }
-                if (weight < weight_min) {
-                    worst_friend_pair = *it;
-                    weight_min = weight;
-                }
+            for (int k = 0; k < K; ++k) {
+                res += GAMMA_U(u, k) * GAMMA_I(i, k);
             }
-            user_scores.push(make_pair(i, res));
-            if (user_scores.size() > 5) {
-                user_scores.pop();
+
+            for (int k = 0; k < K; ++k) {
+               res += THETA_I(i, k) * THETA_I(last_item_test, k);
+            }
+            for (int k = 0; k < K; ++k) {
+                res += 2 * weight_max * PHI_I(i, k) * PHI_I(best_friend_item, k) / F;
+            }
+            if (res > res_max) {
+                predicted_item = i;
+                res_max = res;
             }
         }
-        int size = (int)user_scores.size();
-        for (int i = 0; i < size; ++i) {
-            pair<int, double> user_score = user_scores.top();
-            user_scores.pop();
-            file << u << " " << user_score.first << " " << test_item << " " << best_friend_pair.first << " " << best_friend_pair.second << endl;
-        }
+        FriendItems friendItems = {
+            u, best_friend, predicted_item, best_friend_item, weight_max, test_item
+        };
+        user_affinity.push(friendItems);
+    }
+    int size = (int)user_affinity.size();
+    for (int i = 0; i < min(n, size); ++i) {
+        FriendItems friendItems = user_affinity.top();
+        user_affinity.pop();
+        file << friendItems.user_id << " " << friendItems.predicted_item << " " << friendItems.friend_id << " " << friendItems.friend_item << " " << friendItems.affinity << " " << friendItems.test_item << endl;
     }
     file.close();
 }

@@ -25,23 +25,26 @@ class MapDealer:
     for line in open(input_file, 'r'):
       data = line.split()
       user_id = data[0]
-      item_id = data[1]
-      target_id = data[2]
-      best_friend_id = data[3]
-      best_friend_item_id = data[4]
+      predicted_item_id = data[1]
+      best_friend_id = data[2]
+      best_friend_item_id = data[3]
+      affinity = data[4]
+      test_item_id = data[5]
       ofp.write(self.user_map[int(user_id)])
-      ofp.write(' ')
-      ofp.write(self.item_map[int(item_id)])
-      ofp.write(' ')
-      ofp.write(self.item_map[int(target_id)])
-      ofp.write(' ')
+      ofp.write(', ')
+      ofp.write(self.item_map[int(predicted_item_id)])
+      ofp.write(', ')
       ofp.write(self.user_map[int(best_friend_id)])
-      ofp.write(' ')
+      ofp.write(', ')
       ofp.write(self.item_map[int(best_friend_item_id)])
+      ofp.write(', ')
+      ofp.write(affinity)
+      ofp.write(', ')
+      ofp.write(self.item_map[int(test_item_id)])
       ofp.write('\n')
 
 def main(filename):
-  md = MapDealer('user_map.out', 'item_map.out')
+  md = MapDealer('user_map_30.out', 'item_map_30.out')
   md.translate(filename, filename + '.out')
   
 
