@@ -399,15 +399,16 @@ void SPMC::analyze(int n, const char* path) {
             bool viewed_by_user = (pos_per_user[u].find(i) != pos_per_user[u].end() || test_per_user[u].first == i || val_per_user[u].first == i); 
             if (viewed_by_user) continue;
             double F = pow(friend_items_test.size(), ALPHA);
-            double res = b_i[i];
+            //double res = b_i[i];
+            double res = 0.0;
 
-            for (int k = 0; k < K; ++k) {
-                res += GAMMA_U(u, k) * GAMMA_I(i, k);
-            }
+            //for (int k = 0; k < K; ++k) {
+            //    res += GAMMA_U(u, k) * GAMMA_I(i, k);
+            //}
 
-            for (int k = 0; k < K; ++k) {
-               res += THETA_I(i, k) * THETA_I(last_item_test, k);
-            }
+            //for (int k = 0; k < K; ++k) {
+            //   res += THETA_I(i, k) * THETA_I(last_item_test, k);
+            //}
             for (int k = 0; k < K; ++k) {
                 res += 2 * weight_max * PHI_I(i, k) * PHI_I(best_friend_item, k) / F;
             }
