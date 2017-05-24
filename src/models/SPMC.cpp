@@ -15,6 +15,10 @@ struct FriendItems {
     int friend_item;
     double affinity;
     int test_item;
+    double res_max;
+    double res_ui;
+    double res_il;
+    double bi;
 };
 
 class CompScore {
@@ -372,6 +376,9 @@ void SPMC::analyze(int n, const char* path) {
         int best_friend_item = -1;
         set<int> item_selected;
         int num_iter = min(5000, nItems);
+        double res_ui = 0.0;
+        double res_il = 0.0;
+        double bi = 0.0;
         double weight_max = numeric_limits<double>::min();
         //double weight_min = numeric_limits<double>::max();
         double res_max = numeric_limits<double>::min();
@@ -415,10 +422,21 @@ void SPMC::analyze(int n, const char* path) {
             if (res > res_max) {
                 predicted_item = i;
                 res_max = res;
+                res_ui = 0.0;
+                res_il = 0.0;
+                bi = 0.0;
+                for (int k = 0; k < K; ++k) {
+                    res_ui += GAMMA_U(u, k) * GAMMA_I(i, k);
+                }
+
+                for (int k = 0; k < K; ++k) {
+                   res_il += THETA_I(i, k) * THETA_I(last_item_test, k);
+                }
+                bi = b_i[i];
             }
         }
         FriendItems friendItems = {
-            u, best_friend, predicted_item, best_friend_item, weight_max, test_item
+            u, best_friend, predicted_item, best_friend_item, weight_max, test_item, res_max, res_ui, res_il, bi
         };
         user_affinity.push(friendItems);
     }
@@ -426,7 +444,10 @@ void SPMC::analyze(int n, const char* path) {
     for (int i = 0; i < min(n, size); ++i) {
         FriendItems friendItems = user_affinity.top();
         user_affinity.pop();
-        file << friendItems.user_id << " " << friendItems.predicted_item << " " << friendItems.friend_id << " " << friendItems.friend_item << " " << friendItems.affinity << " " << friendItems.test_item << endl;
+        char buffer[1000];
+        sprintf(buffer, "%d %d %d %d %f %d [%f %f %f %f]", friendItems.user_id, friendItems.predicted_item, friendItems.friend_id, friendItems.friend_item, friendItems.affinity, friendItems.test_item, friendItems.res_max, friendItems.res_ui, friendItems.res_il, friendItems.bi);
+        string a = buffer;
+        file << a << endl;
     }
     file.close();
 }
